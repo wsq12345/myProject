@@ -1,6 +1,5 @@
 <template>
-	<div id="login">
-		<el-button id="back" type="info" @click="back">返回</el-button>
+	<div id="login" v-on:touchstart="startTouch" v-on:touchend="endTouch">
 		<div class="form-container">
 			<h2>用户登录</h2>
 			<el-form label-position="top" :model="formData" :rules="rules" ref="formData">
@@ -10,7 +9,8 @@
 				<el-form-item label="密码" prop="password">
 					<el-input v-model="formData.password" type="password"></el-input>
 				</el-form-item>
-				<el-button class="login-btn" type="success" :loading="logining">登录</el-button>
+				<el-button class="login-btn" type="success" :loading="logining" @click="loginIn">登录</el-button>
+				<el-button class="login-btn" type="warning" @click="register">注册</el-button>
 			</el-form>
 		</div>
 	</div>
@@ -54,19 +54,36 @@
 			}
 		},
 		methods: {
-			back:function(){
-				this.$router.replace("/page4");
-			}
+			loginIn(){
+				sessionStorage.setItem("user",this.username);
+				this.$router.replace("/page1");
+			},
+			register(){
+				this.$router.replace("/register");
+			},
+			startTouch(evt) {
+                // 缓存起始位置信息
+                this.touchStartTaget = evt.targetTouches[0]
+            },
+            endTouch(evt) {
+                const endTouch = evt.changedTouches[0]
+                const startTouch = this.touchStartTaget
+                const deltaX = endTouch.clientX - startTouch.clientX
+                const deltaY = endTouch.clientY - startTouch.clientY
+                // 向右滑, x轴有效长应大于100px
+                if (deltaX > 50) {
+                // 上下偏移量小于45°
+                    if (Math.abs(deltaY) / deltaX <= 1) {
+                        // 认为 ”右滑动“
+                        this.$router.replace("/page4");
+                    }
+                }
+            }
 		}
 	}
 </script>
 
 <style>
-		#back{
-			position: fixed;
-			top: 0px;
-			left: 0px;
-		}
 		#login{
 			display: flex;
 			justify-content: center;

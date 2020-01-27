@@ -45,7 +45,7 @@
 		width: 100%;
 		background: white;
 		display: flex;
-		height: 50px;
+		height: 3rem;
 	}
 	.guide_item{
 		display: flex;
