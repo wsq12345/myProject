@@ -2,7 +2,8 @@
 	<div>
 		<headerGuide msg="我的"></headerGuide>
 		<div id="login">
-			<el-button @click="login" type="success">登录</el-button>
+			{{nickname}}
+			<el-button @click="login" type="success" v-if="btnExist">登录</el-button>
 		</div>
 	</div>
 </template>
@@ -12,16 +13,29 @@
 	export default{
 		data(){
 			return{
-				
+				btnExist: true,
 			}
 		},
 		components:{
 			headerGuide
 		},
 		methods:{
-			login:function(){
+			login(){
 				this.$router.replace("/login");
+				console.log(this.$store.getters.ingetter)
+			},
+			show(){
+				if(this.nickname)
+					this.btnExist=false;
 			}
+		},
+		computed:{
+			nickname(){
+				return `欢迎你，${this.$store.getters.ingetter}`;
+			}
+		},
+		mounted(){
+			this.show();
 		}
 	}
 </script>

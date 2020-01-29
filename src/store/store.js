@@ -4,7 +4,8 @@ Vue.use(Vuex)
 const state={
   count:100,
   songUrl:'',
-  picUrl:''
+  picUrl:'',
+  nickname:''
 }
 const mutations={
   increment(state){
@@ -16,12 +17,15 @@ const mutations={
   },
   getSongUrl(state,Url){
     state.songUrl=Url;
+  },
+  getNickname(state,nickname){
+    store.nickname=nickname;
   }
 }
 const getters={
   ingetter(state){
-    state.count=sessionStorage.getItem("count") || 100;
-    return state.count;
+    state.nickname=sessionStorage.getItem("nickname") || '';
+    return state.nickname;
   }
 }
 const actions={

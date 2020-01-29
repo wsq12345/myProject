@@ -3,8 +3,8 @@
 		<div class="form-container">
 			<h2>用户登录</h2>
 			<el-form label-position="top" :model="formData" :rules="rules" ref="formData">
-				<el-form-item label="用户名" prop="username">
-					<el-input v-model="formData.username"></el-input>
+				<el-form-item label="手机号" prop="phone">
+					<el-input v-model="formData.phone"></el-input>
 				</el-form-item>
 				<el-form-item label="密码" prop="password">
 					<el-input v-model="formData.password" type="password"></el-input>
@@ -17,25 +17,24 @@
 </template>
 
 <script>
-	import headerGuide from '../components/headerGuide.vue'
+	import {login} from '../api/api'
 	export default {
 		data() {
 			return {
 				logining: false,
 				formData: {
-					username: "",
+					phone: "",
 					password: "",
 				},
 				rules: {
-					username: [{
+					phone: [{
 							required: true,
-							message: '请输入用户名',
+							message: '请输入手机名',
 							trigger: 'blur'
 						},
 						{
-							min: 3,
-							max: 10,
-							message: '用户名长度需在3-10个字符之间',
+							min: 11,
+							message: '手机号长度至少为11',
 							trigger: 'blur'
 						}
 					],
@@ -55,8 +54,21 @@
 		},
 		methods: {
 			loginIn(){
-				sessionStorage.setItem("user",this.username);
-				this.$router.replace("/page1");
+				login(this.formData.phone,this.formData.password).then(data=>{
+					//console.log(data);
+					if(data.data.code==200){
+						// console.log(data.data.profile.nickname)
+						sessionStorage.setItem("nickname",data.data.profile.nickname);
+						//this.$store.commit('getNickname',data.data.profile.nickname);
+						this.$router.replace("/page1");
+					}
+						
+					if(data.data.code==502)
+						alert("密码错误");
+				}).catch(e=>{
+					if(e.response.status==501)alert("账号不存在");
+				})
+				// this.$router.replace("/page1");
 			},
 			register(){
 				this.$router.replace("/register");
