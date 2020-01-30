@@ -57,10 +57,10 @@
 				login(this.formData.phone,this.formData.password).then(data=>{
 					//console.log(data);
 					if(data.data.code==200){
-						// console.log(data.data.profile.nickname)
-						sessionStorage.setItem("nickname",data.data.profile.nickname);
+						let a=JSON.stringify(data.data); 
+						sessionStorage.setItem("nickname",a);
 						//this.$store.commit('getNickname',data.data.profile.nickname);
-						this.$router.replace("/page1");
+						this.$router.replace("/page4");
 					}
 						
 					if(data.data.code==502)
@@ -101,6 +101,7 @@
 			justify-content: center;
 			align-items: center;
 			height: 100%;
+			width: 100%;
 		}
 		.form-container{
 			background: #fff;

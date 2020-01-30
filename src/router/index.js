@@ -50,7 +50,8 @@ export default new VueRouter({
 		  component: page4,
 			meta:{
 				isShow:true,
-				iconShow:false
+				iconShow:false,
+				loginShow:true
 			}
 		},
 		{

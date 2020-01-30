@@ -16,5 +16,6 @@ export const register=(phone,password,captcha,nickname)=>{
     }}) 
 }
 export const login=(phone,password)=>{return axios.get(`${api}/login/cellphone`,{params:{phone:phone,password:password}});}
-
+export const logout=()=>{return axios.get(`${api}/logout`)}
+export const getUserInfo=()=>{return axios.get(`${api}/user/subcount`)}
 

@@ -9,8 +9,7 @@ const state={
 }
 const mutations={
   increment(state){
-    state.count ++;
-    sessionStorage.setItem("count",state.count);
+    state.count++;
   },
   getPicUrl(state,Url){
     state.picUrl=Url;
@@ -24,20 +23,18 @@ const mutations={
 }
 const getters={
   ingetter(state){
-    state.nickname=sessionStorage.getItem("nickname") || '';
+    let data=JSON.parse(sessionStorage.getItem("nickname"));
+    if(data)
+      state.nickname=data.profile.avatarUrl;
     return state.nickname;
   }
 }
 const actions={
-  plus({commit}){
-    return new Promise((resolve,reject)=>{
-      setTimeout(()=>{
-        commit('increment');
-        resolve();
-      },1000);
-    })
+  increment ({ commit }) {
+    setTimeout(()=>{
+      commit('increment');
+    },1000) 
   }
-
 }
 const store=new Vuex.Store({
   state,
