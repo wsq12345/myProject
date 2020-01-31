@@ -65,36 +65,36 @@
 	}
 </script>
 
-<style>
+<style lang="less">
 	header{
 		color: white;
 		background: steelblue;
 		width: 100%;
 		top: 0px;
 		height: 2rem;
-		line-height: 2rem;
-	}
-	#titile{
-		display: inline-block;
-		margin-left: 50%;
-		transform: translateX(-50%);
-	}
-	#icon{
-		float: right;
-	}
-	a{
-		float: right;
-		color: wheat;
-		opacity: 0.4;
-		text-decoration: none;
-	}
-	.el-drop{
-		float: right;
-	}
-	.avatarImg{
-		width: 2rem;
-		height: 2rem;
-		border-radius: 50%;
-		overflow: hidden;
+		line-height: 2rem;	
+		#titile{
+			display: inline-block;
+			margin-left: 50%;
+			transform: translateX(-50%);
+		}
+		#icon{
+			float: right;
+		}
+		a{
+			float: right;
+			color: wheat;
+			opacity: 0.4;
+			text-decoration: none;
+		}
+		.el-drop{
+			float: right;
+			.avatarImg{
+				width: 2rem;
+				height: 2rem;
+				border-radius: 50%;
+				overflow: hidden;
+			}
+		}
 	}
 </style>

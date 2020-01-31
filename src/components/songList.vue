@@ -1,5 +1,6 @@
 <template>
 	<div id="content">
+		<h3>推荐新歌</h3>
 		<ul id="songs">
 			<li id="song" v-for="(comment,index) in comments" @click="getUrl(index)" v-bind:key=comment.index>
 				<img v-lazy="comment.picUrl" />
@@ -25,7 +26,7 @@
 			},
 			getUrl:function(index){
 				let id=this.comments[index].id;
-				let picUrl=this.comments[index].picUrl;
+				let picUrl=this.comments[index].picUrl+"?param=300x300";
 				this.$store.commit('getPicUrl',picUrl);
 				getSongUrl(id).then(data=>{
 					let songUrl=data.data.data[0].url;
@@ -40,22 +41,23 @@
 	}
 </script>
 
-<style>
+<style lang="less">
+	h3{
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
 	#songs {
-		position: absolute;
-		top: 2rem;
 		color: #4682B4;
-		width: 100%;
-		margin-bottom: 3rem;
-	}
-
-	#song {
-		display: flex;
-		flex: 1;
-		flex-direction: column;
-		text-align: center;
-	}
-	img{
-		width: 100%;
+		#song {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+			text-align: center;
+			&:nth-last-child(1){
+                margin-bottom: 3rem;
+            }
+			img{
+				width: 100%;
+			}
+		}
 	}
 </style>

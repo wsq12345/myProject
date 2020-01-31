@@ -1,28 +1,30 @@
 <template>
 	<div>
 		<headerGuide msg="音乐馆"></headerGuide>
-		<songList></songList>
+		<slider></slider>
+		<recommend></recommend>
 	</div>
 </template>
 
 <script>
 	import headerGuide from '../components/headerGuide.vue'
-	import songList from '../components/songList'
+	import slider from '../components/slider'
+	import recommend from '../components/recommend'
 	export default{
 		data(){
 			return{
-				
+				items:[]
 			}
 		},
 		components:{
 			headerGuide,
-			songList
-		},
-		
+			slider,
+			recommend
+		},	
 	}
 </script>
 
-<style>
+<style lang="less">
 
 
-</style>
+</style>>
