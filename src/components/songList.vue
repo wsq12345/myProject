@@ -6,6 +6,7 @@
 				<img v-lazy="comment.picUrl" />
 				{{comment.name}}</li>
 		</ul>
+		<div class="foot"></div>
 	</div>
 </template>
 
@@ -52,12 +53,14 @@
 			flex: 1;
 			flex-direction: column;
 			text-align: center;
-			&:nth-last-child(1){
-                margin-bottom: 3rem;
-            }
+			overflow: hidden;
 			img{
 				width: 100%;
 			}
 		}
+	}
+	.foot{
+		height: 3rem;
+		width: 100%;
 	}
 </style>

@@ -8,7 +8,7 @@
 		</div>
 		<div class="guide_item" @click="goto('/page2')" :class="{on:'/page2'===$route.path}">
 			<span class="item_icon">
-				<i class="iconfont icon-lianxiren"></i>
+				<i class="iconfont icon-tuijian"></i>
 			</span>
 			<span class="guide_msg">推荐</span>
 		</div>

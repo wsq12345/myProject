@@ -1,8 +1,8 @@
 <template>
     <div v-on:touchstart="startTouch" v-on:touchend="endTouch">
         <headerGuide msg="正在播放"></headerGuide>
-        <img v-lazy="PicUrl">
-        <audio :src="SongUrl" controls autoplay></audio>
+        <img v-lazy="PicUrl" class="pic">
+        <audio :src="SongUrl" controls autoplay class="play"></audio>
     </div>
 </template>
 
@@ -50,6 +50,21 @@
     }
 </script>
 
-<style>
-
+<style lang="less">
+    .pic{
+        border-radius: 50%; 
+        -webkit-animation: move 8s linear infinite;
+    }
+    @-webkit-keyframes move{
+        0%{-webkit-transform:rotate(0deg);}
+		25%{-webkit-transform:rotate(90deg);}
+		50%{-webkit-transform:rotate(180deg);}
+		75%{-webkit-transform:rotate(270deg);}
+		100%{-webkit-transform:rotate(360deg);}
+    }
+    .play{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
 </style>
