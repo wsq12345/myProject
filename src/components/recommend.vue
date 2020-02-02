@@ -8,6 +8,7 @@
                 <div class="content">{{item.name}}</div>
             </li> 
         </ul>
+        <div class="foot"></div>
     </div>  
 </template>
 
@@ -54,7 +55,6 @@ export default {
         height: 100%;
     }
     .recommend{
-        margin-bottom: 3rem;
         list-style: none;
         overflow: hidden;
         li{
@@ -83,5 +83,9 @@ export default {
                 height: 4rem;
             }
         }
+    }
+    .foot{
+        height: 3rem;
+        width: 100%;
     }
 </style>

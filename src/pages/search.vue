@@ -4,9 +4,11 @@
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <ul v-if="!hotShow" class="result">
-            <li v-for="(result,index) in results" :key="result.index" @click="showResult(index)">
+            <li v-for="(result,index) in results" :key="result.index" @click="getUrl(index)">
                 {{result.name}}
-                <h5>{{result.artists[0].name+'/'+result.album.name}}</h5>
+                <br>
+                <span v-for="artist in result.artists" :key="artist.index">{{artist.name+'/'}}</span>
+                <span>{{result.album.name}}</span>
             </li>
         </ul>
         <div v-if="hotShow">
@@ -19,7 +21,7 @@
     </div>
 </template>
 <script>
-    import {hot,searchM} from '../api/api'
+    import {hot,searchM,getSongUrl} from '../api/api'
     export default {
         data(){
             return{
@@ -48,6 +50,33 @@
                     }
                 }
             },
+            debounce(func, wait,immediate) {
+                let timer;
+                return function() {
+                let context = this,
+                    args = arguments;    
+                    if (timer) clearTimeout(timer);
+                    if (immediate) {
+                        let callNow = !timer;
+                        timer = setTimeout(() => {
+                        timer = null;
+                        }, wait);
+                        if (callNow) func.apply(context, args);
+                    } else {
+                        timer  = setTimeout(() => {
+                            func.apply
+                        }, wait)
+                    }
+                }
+            },
+            searchSong(){
+                searchM(this.search).then(data=>{
+                    this.results=data.data.result.songs;
+                    this.hotShow=false;
+                }).catch(e=>{
+                    console.log(e);
+                })
+            },
             showHot(){
                 hot().then(data=>{
                     this.hotNews=data.data.result.hots;
@@ -64,6 +93,16 @@
                 }).catch(e=>{
                     console.log(e);
                 })
+            },
+            getUrl(index){
+                let id=this.results[index].id;
+                let picUrl=this.results[index].artists[0].img1v1Url+"?param=300x300";
+				this.$store.commit('getPicUrl',picUrl);
+				getSongUrl(id).then(data=>{
+					let songUrl=data.data.data[0].url;
+					this.$store.commit('getSongUrl',songUrl);
+				})
+				this.$router.replace("/play");
 			}
         },
         mounted(){
@@ -73,6 +112,8 @@
             search(){
                 if(!this.search)
                     this.hotShow=true;
+                else
+                    this.debounce(this.searchSong(),1000,true)
             }
         }
         
@@ -88,9 +129,10 @@
             li{
                 margin-left: 2rem;
                 border-bottom: 1px solid rgba(255,0,255,0.3);
-                h5{
+                span{
                     color: palevioletred;
-                    opacity: 0.3;
+                    opacity: 0.5;
+                    font-size: 0.6rem;
                 }
             }
             
@@ -106,6 +148,7 @@
             li{
                 margin-right: 2rem;
                 margin-bottom: 4px; 
+                border-radius: 20%; 
                 float: left;
                 background: white;
                 padding: 2px 8px 2px 8px;

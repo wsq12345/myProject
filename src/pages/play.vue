@@ -52,6 +52,8 @@
 
 <style lang="less">
     .pic{
+        width:100%;
+        height:100%;
         border-radius: 50%; 
         -webkit-animation: move 8s linear infinite;
     }

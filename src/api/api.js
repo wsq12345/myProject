@@ -22,4 +22,5 @@ export const banners=()=>{return axios.get(`${api}/banner`)}
 export const personalized=()=>{return axios.get(`${api}/personalized?limit`)}
 export const hot=()=>{return axios.get(`${api}/search/hot`)}   
 export const searchM=(keywords)=>{return axios.get(`${api}/search`,{params:{keywords:keywords}})}
+export const topList=()=>{return axios.get(`${api}/toplist/detail`)}  
 

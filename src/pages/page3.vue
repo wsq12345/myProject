@@ -1,14 +1,17 @@
 <template>
 	<div>
-	<headerGuide msg="动态"></headerGuide>
+		<headerGuide msg="排行榜"></headerGuide>
+		<toplist></toplist>
 	</div>
 </template>
 
 <script>
 	import headerGuide from '../components/headerGuide.vue'
+	import toplist from '../components/toplist.vue'
 	export default{
 		components:{
-			headerGuide
+			headerGuide,
+			toplist
 		},
 
 	}
