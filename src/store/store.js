@@ -5,7 +5,8 @@ const state={
   count:100,
   songUrl:'',
   picUrl:'',
-  nickname:''
+  nickname:'',
+  lines:''
 }
 const mutations={
   increment(state){
@@ -18,7 +19,10 @@ const mutations={
     state.songUrl=Url;
   },
   getNickname(state,nickname){
-    store.nickname=nickname;
+    state.nickname=nickname;
+  },
+  getLyric(state,line){
+    state.lines=line;
   }
 }
 const getters={

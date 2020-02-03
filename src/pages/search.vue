@@ -21,7 +21,7 @@
     </div>
 </template>
 <script>
-    import {hot,searchM,getSongUrl} from '../api/api'
+    import {hot,searchM,getSongUrl,songDetail,getLyric} from '../api/api'
     export default {
         data(){
             return{
@@ -81,7 +81,7 @@
                 hot().then(data=>{
                     this.hotNews=data.data.result.hots;
                 }).catch(e=>{
-                    console.log(e);
+                    throw(e);
                 })
             },
             searchMusic(index){
@@ -95,9 +95,24 @@
                 })
             },
             getUrl(index){
+                let lines;
                 let id=this.results[index].id;
-                let picUrl=this.results[index].artists[0].img1v1Url+"?param=300x300";
-				this.$store.commit('getPicUrl',picUrl);
+                getLyric(id).then(data=>{
+                    if(!data.data.lrc)
+                        lines='纯音乐，请欣赏'
+                    else
+                        lines=data.data.lrc.lyric;
+                    this.$store.commit('getLyric',lines);
+                }).catch(e=>{
+                    console.log(e);
+                })
+                songDetail(id).then(data=>{
+                    //console.log(data.data.songs[0].al.picUrl)
+                    let picUrl=data.data.songs[0].al.picUrl+"?param=300x300";
+                    this.$store.commit('getPicUrl',picUrl);
+                }).catch(e=>{
+                    throw(e);
+                })
 				getSongUrl(id).then(data=>{
 					let songUrl=data.data.data[0].url;
 					this.$store.commit('getSongUrl',songUrl);
