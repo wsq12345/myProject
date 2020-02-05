@@ -12,6 +12,21 @@
 - [X] 歌词
 - [X] 首页轮播
 
+# 目录结构
+* build - webpack config files
+* config - webpack config files
+* dist - build
+* src -your app
+    * api
+    * assets
+    * components - your vue components
+    * pages - your pages
+    *router -routes
+    * stroe -vuex
+    * App.vue
+    * main.js - main file
+* static - static assets
+
 ## Build Setup
 
 ``` bash
