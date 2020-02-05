@@ -2,14 +2,14 @@
 
 > A Vue.js project
 
-# 后端接口 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 默认端口3000
+# 后端接口 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 使用默认端口3000
 
 # 功能
--[X] 登录
--[X] 注册
--[X] 搜索
--[X] 歌词
--[X] 首页轮播
+- [X] 登录
+- [X] 注册
+- [X] 搜索
+- [X] 歌词
+- [X] 首页轮播
 
 ## Build Setup
 
