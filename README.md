@@ -2,7 +2,8 @@
 
 > A Vue.js project
 
-# 后端接口 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 使用默认端口3000
+# 后端
+后端接口采用github 上开源的 NodeJS 版 api 接口接口 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 使用默认端口3000
 
 # 功能
 - [X] 登录
