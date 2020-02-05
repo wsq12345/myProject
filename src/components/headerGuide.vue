@@ -1,5 +1,6 @@
 <template>
 	<header>
+		<span id="back" @click="back" v-show="$route.meta.backShow"><i class="iconfont icon-fanhui"></i></span>
 		<h3 id="titile">{{msg}}</h3>
 		<span id="icon" @click="search" v-show="$route.meta.iconShow"><i class="iconfont icon-search"></i></span>
 		<a @click="logIn" v-if="$route.meta.loginShow & isLogin" >登录</a>
@@ -43,6 +44,9 @@
 				}).catch(e=>{
 					console.log(e);
 				})
+			},
+			back(){
+				this.$router.replace('/page1');
 			}
 		},
 		watch:{
@@ -73,6 +77,9 @@
 		top: 0px;
 		height: 2rem;
 		line-height: 2rem;	
+		.iconfont{
+			font-size: 30px;
+		}
 		#titile{
 			display: inline-block;
 			margin-left: 50%;
@@ -80,6 +87,9 @@
 		}
 		#icon{
 			float: right;
+		}
+		#back{
+			float: left;
 		}
 		a{
 			float: right;

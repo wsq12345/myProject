@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import {getSongList,getSongUrl} from '../api/api'
+	import {getSongList,getSongUrl,getLyric} from '../api/api'
 	export default {
 		data() {
 			return {
@@ -27,8 +27,18 @@
 			},
 			getUrl:function(index){
 				let id=this.comments[index].id;
+				let lines;
 				let picUrl=this.comments[index].picUrl+"?param=300x300";
 				this.$store.commit('getPicUrl',picUrl);
+				getLyric(id).then(data=>{
+                    if(!data.data.lrc)
+                        lines='纯音乐，请欣赏'
+                    else
+                        lines=data.data.lrc.lyric;
+                    this.$store.commit('getLyric',lines);
+                }).catch(e=>{
+                    console.log(e);
+                })
 				getSongUrl(id).then(data=>{
 					let songUrl=data.data.data[0].url;
 					this.$store.commit('getSongUrl',songUrl);

@@ -1,5 +1,5 @@
 <template>
-	<div id="footer">
+	<footer id="footer">
 		<div class="guide_item" @click="goto('/page1')" :class="{on:'/page1'===$route.path}">
 			<span class="item_icon">
 				<i class="iconfont icon-tubiao15"></i>
@@ -24,7 +24,7 @@
 			</span>
 			<span class="guide_msg">我的</span>
 		</div>
-	</div>
+	</footer>
 </template>
 
 <script>
@@ -37,7 +37,7 @@
 	}
 </script>
 
-<style>
+<style lang="less">
 	#footer{
 		position: fixed;
 		bottom: 0px;
@@ -46,20 +46,20 @@
 		background: white;
 		display: flex;
 		height: 3rem;
-	}
-	.guide_item{
-		display: flex;
-		flex: 1;
-		flex-direction: column;
-		text-align: center;
-	}
-	.iconfont{
-		font-size: 30px;
-	}
-	.guide_msg{
-		font-size: 10px;
-	}
-	.on{
-		color: #42B983;
-	}
+		.guide_item{
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+			text-align: center;
+			.iconfont{
+				font-size: 30px;
+			}
+			.guide_msg{
+				font-size: 10px;
+			}
+			&.on{
+				color: #42B983;
+			}
+		}
+	}	
 </style>

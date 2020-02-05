@@ -1,9 +1,20 @@
 <template>
-    <div v-on:touchstart="startTouch" v-on:touchend="endTouch">
+    <div>
         <headerGuide msg="正在播放"></headerGuide>
-        <img v-lazy="PicUrl" class="pic">
-        <audio :src="SongUrl" @timeupdate="getTime" controls autoplay class="play"></audio>
+        <img v-lazy="PicUrl" class="pic" :class="{isPlay}">
         <p class="lyric">{{song}}</p>
+        <audio :src="SongUrl" @canplay="getDuration" @timeupdate="getTime" autoplay id="audio" ref="audio"></audio>
+        <div class="play">
+            <div class="block">
+                <el-slider v-model="value" :show-tooltip="false" :max="allTime" @change="changeAudio"></el-slider>
+                <span class="startTime">{{playingTime}}</span><span class="totalTime">{{duration}}</span>
+            </div>
+            <div class="control">
+                <i class="iconfont icon-shangyishou" @click="previous()"></i>
+                <i class="iconfont" :class="[isPlay?'icon-bofang':'icon-zanting']" @click="play()"></i>
+                <i class="iconfont icon-xiayishou" @click="next()"></i>
+            </div>  
+        </div>
     </div>
 </template>
 
@@ -15,7 +26,12 @@
                 SongUrl:'',
                 PicUrl:'',
                 song: '',
-                startTime: 0,
+                start: 0,
+                playingTime: '00:00',
+                allTime: 0,
+                isPlay:true,
+                value: 0,
+                duration: '',
                 lines: []
             }       
         },
@@ -47,35 +63,66 @@
                      return a.time - b.time;
                 });    
             },
+            setTime(time){
+                let mintues=parseInt(time/60);
+                let seconds=parseInt(time)%60;
+                if(mintues<10)
+                    mintues='0'+mintues;
+                if(seconds<10)
+                    seconds='0'+seconds;
+                return `${mintues}:${seconds}`
+            },
+            getDuration() {
+                let time = this.$refs.audio.duration;
+                this.duration = this.setTime(time);
+                this.allTime=this.$refs.audio.duration;
+            },
+            changeAudio(val){
+                if (this.$refs.audio) {
+                    this.$refs.audio.currentTime = val;
+                }
+                for(var i=0;i<this.lines.length;i++){
+                    if(val>=this.lines[i].time && val<=this.lines[i+1].time){
+                        this.start=i;
+                        this.song=this.lines[this.start].txt;
+                        this.start++;
+                        break;
+                    }     
+                }
+            },
             getTime(e) {
+                this.playingTime=this.setTime(parseInt(e.target.currentTime));
+                this.value=parseInt(e.target.currentTime);
                 if(this.lines.length){
-                    if(parseInt(e.target.currentTime)==this.lines[this.startTime].time){
-                        this.song=this.lines[this.startTime].txt;
-                        this.startTime++;
+                    if(parseInt(e.target.currentTime)==this.lines[this.start].time){
+                        this.song=this.lines[this.start].txt;
+                        this.start++;
                     } 
                 }   
             },
-            startTouch(evt) {
-                // 缓存起始位置信息
-                this.touchStartTaget = evt.targetTouches[0]
+            previous(){
+
             },
-            endTouch(evt) {
-                const endTouch = evt.changedTouches[0]
-                const startTouch = this.touchStartTaget
-                const deltaX = endTouch.clientX - startTouch.clientX
-                const deltaY = endTouch.clientY - startTouch.clientY
-                // 向右滑, x轴有效长应大于100px
-                if (deltaX > 50) {
-                // 上下偏移量小于45°
-                    if (Math.abs(deltaY) / deltaX <= 1) {
-                        // 认为 ”右滑动“
-                        this.$router.replace("/page1");
-                    }
+            play(){
+                var audio=document.getElementById("audio");
+                if(this.isPlay){
+                    audio.pause();
+                    this.isPlay=false;
+                }else{
+                    audio.play();
+                    this.isPlay=true;
                 }
-            }
+                    
+            },
+            next(){
+
+            },
         },
         mounted(){
             this.show();
+        },
+        computed:{
+        
         },
         components:{
             headerGuide
@@ -88,7 +135,9 @@
         width:100%;
         height:100%;
         border-radius: 50%; 
-        -webkit-animation: move 16s linear infinite;
+        &.isPlay{
+            -webkit-animation: move 16s linear infinite;
+        }   
     }
     @-webkit-keyframes move{
         0%{-webkit-transform:rotate(0deg);}
@@ -103,8 +152,28 @@
         color: rgb(0, 255, 170);
     }
     .play{
+        display: flex;
+        flex: 1;
+		flex-direction: column;
         position: absolute;
         bottom: 0;
         width: 100%;
+        .block{
+            .startTime{
+                float: left;
+            }
+            .totalTime{
+                float: right;
+            }
+        }
+        .control{
+            display: flex;
+            justify-content: center;
+            .iconfont{
+                font-size: 30px;
+                margin-right: 1rem;
+            }
+        }
+        
     }
 </style>

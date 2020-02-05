@@ -60,7 +60,8 @@ export default new VueRouter({
 			component: play,
 			  meta:{
 				  isShow:false,
-				  iconShow:false
+				  iconShow:false,
+				  backShow:true
 			  }
 		  },
 		{
@@ -68,7 +69,7 @@ export default new VueRouter({
 			name: 'search',
 			component: search,
 			  meta:{
-				  isShow:false
+				  isShow:false,
 			  }
 		  },
 		{
@@ -76,7 +77,7 @@ export default new VueRouter({
 		  name: 'login',
 		  component: login,
 			meta:{
-				isShow:false
+				isShow:false,
 			}
 		},
 		{
