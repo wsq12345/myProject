@@ -84,12 +84,14 @@
 			display: inline-block;
 			margin-left: 50%;
 			transform: translateX(-50%);
+			text-overflow: ellipsis;
 		}
 		#icon{
 			float: right;
 		}
 		#back{
-			float: left;
+			position: absolute;
+			left: 0;
 		}
 		a{
 			float: right;

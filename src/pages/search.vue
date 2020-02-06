@@ -21,7 +21,7 @@
     </div>
 </template>
 <script>
-    import {hot,searchM,getSongUrl,songDetail,getLyric} from '../api/api'
+    import {hot,searchM} from '../api/api'
     export default {
         data(){
             return{
@@ -42,7 +42,7 @@
                 const deltaX = endTouch.clientX - startTouch.clientX
                 const deltaY = endTouch.clientY - startTouch.clientY
                 // 向右滑, x轴有效长应大于100px
-                if (deltaX > 50) {
+                if (deltaX > 100) {
                 // 上下偏移量小于45°
                     if (Math.abs(deltaY) / deltaX <= 1) {
                         // 认为 ”右滑动“
@@ -72,6 +72,7 @@
             searchSong(){
                 searchM(this.search).then(data=>{
                     this.results=data.data.result.songs;
+                    this.$store.commit('getId',this.results);
                     this.hotShow=false;
                 }).catch(e=>{
                     console.log(e);
@@ -95,28 +96,7 @@
                 })
             },
             getUrl(index){
-                let lines;
-                let id=this.results[index].id;
-                getLyric(id).then(data=>{
-                    if(!data.data.lrc)
-                        lines='纯音乐，请欣赏'
-                    else
-                        lines=data.data.lrc.lyric;
-                    this.$store.commit('getLyric',lines);
-                }).catch(e=>{
-                    console.log(e);
-                })
-                songDetail(id).then(data=>{
-                    //console.log(data.data.songs[0].al.picUrl)
-                    let picUrl=data.data.songs[0].al.picUrl+"?param=300x300";
-                    this.$store.commit('getPicUrl',picUrl);
-                }).catch(e=>{
-                    throw(e);
-                })
-				getSongUrl(id).then(data=>{
-					let songUrl=data.data.data[0].url;
-					this.$store.commit('getSongUrl',songUrl);
-				})
+                this.$store.commit('getIndex',index);
 				this.$router.replace("/play");
 			}
         },

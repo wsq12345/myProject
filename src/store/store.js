@@ -6,12 +6,11 @@ const state={
   songUrl:'',
   picUrl:'',
   nickname:'',
-  lines:''
+  lines:'',
+  songId:[],
+  index:'',
 }
 const mutations={
-  increment(state){
-    state.count++;
-  },
   getPicUrl(state,Url){
     state.picUrl=Url;
   },
@@ -22,7 +21,21 @@ const mutations={
     state.nickname=nickname;
   },
   getLyric(state,line){
+    state.lines='',
     state.lines=line;
+  },
+  getId(state,arr){
+      state.songId=[];
+      for(var i=0;i<arr.length;i++){
+        state.songId.push(arr[i].id);
+      }  
+  },
+  getIndex(state,index){
+    state.index='';
+    state.index=index;
+  },
+  updateInde(state,index){
+    state.index=index;
   }
 }
 const getters={

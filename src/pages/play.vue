@@ -1,7 +1,7 @@
 <template>
     <div>
-        <headerGuide msg="正在播放"></headerGuide>
-        <img v-lazy="PicUrl" class="pic" :class="{isPlay}">
+        <headerGuide :msg="songName"></headerGuide>
+        <img v-lazy="PicUrl" class="pic" :class="{isPlay:!isPlay}">
         <p class="lyric">{{song}}</p>
         <audio :src="SongUrl" @canplay="getDuration" @timeupdate="getTime" autoplay id="audio" ref="audio"></audio>
         <div class="play">
@@ -10,6 +10,7 @@
                 <span class="startTime">{{playingTime}}</span><span class="totalTime">{{duration}}</span>
             </div>
             <div class="control">
+                <i class="iconfont" :class="[playLoop?'icon-ziyuanldpi':'icon-danquxunhuan']" @click="loop()"></i>
                 <i class="iconfont icon-shangyishou" @click="previous()"></i>
                 <i class="iconfont" :class="[isPlay?'icon-bofang':'icon-zanting']" @click="play()"></i>
                 <i class="iconfont icon-xiayishou" @click="next()"></i>
@@ -20,6 +21,7 @@
 
 <script>
     import headerGuide from '../components/headerGuide.vue'
+    import {getSongUrl,songDetail,getLyric} from '../api/api'
     export default {
         data(){
             return{
@@ -32,20 +34,38 @@
                 isPlay:true,
                 value: 0,
                 duration: '',
+                songName: '',
+                playLoop: true, //顺序播放、单曲循环
+                iconLoop: 'icon-ziyuanldpi',
                 lines: []
             }       
         },
         methods:{
-            show(){
+            show(index){
                 setTimeout(()=>{
-                    this.SongUrl=this.$store.state.songUrl;
-                    this.PicUrl=this.$store.state.picUrl;
-                    let lines=this.$store.state.lines;
-                    if(lines=='纯音乐，请欣赏'){
-                        this.song=lines;
-                    } 
-                    this.initLines(lines);
-                },2000)
+                    let id=this.$store.state.songId[index];
+                    getLyric(id).then(data=>{
+                    if(!data.data.lrc)
+                        this.song='纯音乐，请欣赏'
+                    else
+                        this.initLines(data.data.lrc.lyric);
+                    }).catch(e=>{
+                        console.log(e);
+                    })
+                    songDetail(id).then(data=>{
+                        this.PicUrl=data.data.songs[0].al.picUrl+"?param=300x300";
+                        this.songName=data.data.songs[0].name;
+                    }).catch(e=>{
+                        throw(e);
+                    })
+                    getSongUrl(id).then(data=>{
+                        this.SongUrl=data.data.data[0].url;
+                    }).catch(e=>{
+                        console.log(e);
+                    })    
+                    this.isPlay=true;       
+                },500)
+
             },
             initLines(content){
                 const timeExp = /\[\d{2}:\d{2}.\d{3}\]/g;
@@ -81,13 +101,15 @@
                 if (this.$refs.audio) {
                     this.$refs.audio.currentTime = val;
                 }
-                for(var i=0;i<this.lines.length;i++){
-                    if(val>=this.lines[i].time && val<=this.lines[i+1].time){
-                        this.start=i;
-                        this.song=this.lines[this.start].txt;
-                        this.start++;
-                        break;
-                    }     
+                if(this.song!='纯音乐，请欣赏'){
+                    for(var i=0;i<this.lines.length;i++){
+                        if(val>=this.lines[i].time && val<=this.lines[i+1].time){
+                            this.start=i;
+                            this.song=this.lines[this.start].txt;
+                            this.start++;
+                            break;
+                        }     
+                    }
                 }
             },
             getTime(e) {
@@ -101,7 +123,13 @@
                 }   
             },
             previous(){
-
+                let index=this.$store.state.index;
+                index--;
+                if(index<0){
+                    index=this.$store.state.songId.length;
+                }
+                this.$store.commit('updateInde',index);
+                this.show(index);
             },
             play(){
                 var audio=document.getElementById("audio");
@@ -115,11 +143,25 @@
                     
             },
             next(){
-
+                let index=this.$store.state.index;
+                index++;
+                if(index>=this.$store.state.songId.length){
+                    index=0;
+                }
+                this.$store.commit('updateInde',index);
+                this.show(index);
             },
+            loop(){
+                if(this.playLoop){
+                    this.playLoop=false;
+                }else{
+                    this.playLoop=true;
+                }
+            }        
+ 
         },
         mounted(){
-            this.show();
+            this.show(this.$store.state.index);
         },
         computed:{
         
@@ -135,8 +177,9 @@
         width:100%;
         height:100%;
         border-radius: 50%; 
+        -webkit-animation: move 16s linear infinite;
         &.isPlay{
-            -webkit-animation: move 16s linear infinite;
+            -webkit-animation-play-state:paused;
         }   
     }
     @-webkit-keyframes move{
@@ -158,6 +201,8 @@
         position: absolute;
         bottom: 0;
         width: 100%;
+        background: rgb(82, 83, 88);
+        color: white;
         .block{
             .startTime{
                 float: left;
