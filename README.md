@@ -2,6 +2,31 @@
 
 > A Vue.js project
 
+# 后端
+后端接口采用github 上开源的 NodeJS 版 api 接口接口 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 使用默认端口3000
+
+# 功能
+- [X] 登录
+- [X] 注册
+- [X] 搜索
+- [X] 歌词
+- [X] 首页轮播
+
+# 目录结构
+* build - webpack config files
+* config - webpack config files
+* dist - build
+* src -your app
+    * api
+    * assets
+    * components - your vue components
+    * pages - your pages
+    *router -routes
+    * stroe -vuex
+    * App.vue
+    * main.js - main file
+* static - static assets
+
 ## Build Setup
 
 ``` bash
