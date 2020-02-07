@@ -12,6 +12,9 @@
 - [X] 搜索
 - [X] 显示歌词
 - [X] 播放列表
+- [X] 单曲循环
+- [X] 列表循环
+- [X] 随机循环
 
 # 目录结构
 * build - webpack config files
