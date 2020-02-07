@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<headerGuide msg="排行榜"></headerGuide>
+		<div class="zanwei"></div>
 		<toplist></toplist>
 	</div>
 </template>
@@ -18,10 +19,7 @@
 </script>
 
 <style>
-	#allmap{
-		position: absolute;
-		top: 30px;
-		width: 100%;
-		height: 500px;
+	.zanwei{
+		height: 2rem;
 	}
 </style>

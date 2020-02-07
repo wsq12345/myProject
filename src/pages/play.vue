@@ -1,6 +1,7 @@
 <template>
     <div>
         <headerGuide :msg="songName"></headerGuide>
+        <div class="zanwei"></div>
         <img v-lazy="PicUrl" class="pic" :class="{isPlay:!isPlay}">
         <p class="lyric">{{song}}</p>
         <audio :src="SongUrl" @canplay="getDuration" @timeupdate="getTime" autoplay id="audio" ref="audio"></audio>
@@ -10,11 +11,22 @@
                 <span class="startTime">{{playingTime}}</span><span class="totalTime">{{duration}}</span>
             </div>
             <div class="control">
-                <i class="iconfont" :class="[playLoop?'icon-ziyuanldpi':'icon-danquxunhuan']" @click="loop()"></i>
+                <i class="iconfont" :class="{'icon-ziyuanldpi':playLoop==0,'icon-danquxunhuan':playLoop==1,'icon-suijibofang':playLoop==2}" @click="loop()"></i>
                 <i class="iconfont icon-shangyishou" @click="previous()"></i>
                 <i class="iconfont" :class="[isPlay?'icon-bofang':'icon-zanting']" @click="play()"></i>
                 <i class="iconfont icon-xiayishou" @click="next()"></i>
+                <i class="iconfont icon-bofangliebiao" @click="list()"></i> 
             </div>  
+        </div>
+        <div class="playList" v-show="playlist">
+            <header>播放列表</header>
+            <ul>
+                <li v-for="(list,index) in lists" :key="list.id" :class="{on:$store.state.index==index}">
+                    <span class="listName" @click="changeSong(index)">{{list.name}}</span>
+                    <span class="clanel" @click="delSong(index)"><i class="iconfont icon-quxiao"></i></span>
+                </li>
+            </ul>
+            <footer @click="close()">关闭</footer>
         </div>
     </div>
 </template>
@@ -35,15 +47,18 @@
                 value: 0,
                 duration: '',
                 songName: '',
-                playLoop: true, //顺序播放、单曲循环
+                playLoop: 0, //顺序播放、单曲循环、随机播放
                 iconLoop: 'icon-ziyuanldpi',
-                lines: []
+                playlist: false,
+                lines: [],
+                lists: []
             }       
         },
         methods:{
             show(index){
                 setTimeout(()=>{
-                    let id=this.$store.state.songId[index];
+                    let id=this.$store.state.songId[index].id;
+                    this.lists=this.$store.state.songId;
                     getLyric(id).then(data=>{
                     if(!data.data.lrc)
                         this.song='纯音乐，请欣赏'
@@ -152,13 +167,27 @@
                 this.show(index);
             },
             loop(){
-                if(this.playLoop){
-                    this.playLoop=false;
-                }else{
-                    this.playLoop=true;
+                if(this.playLoop==0){
+                    this.playLoop=1;
+                }else if(this.playLoop==1){
+                    this.playLoop=2;
+                }else if(this.playLoop==2){
+                    this.playLoop=0;
                 }
-            }        
- 
+            },
+            list(){
+                this.playlist=true;
+            },        
+            close(){
+                this.playlist=false;
+            },
+            changeSong(index){
+                this.$store.commit('updateInde',index);
+                this.show(index);
+            },
+            delSong(index){
+                
+            }
         },
         mounted(){
             this.show(this.$store.state.index);
@@ -173,6 +202,9 @@
 </script>
 
 <style lang="less">
+    .zanwei{
+		height: 2rem;
+	}
     .pic{
         width:100%;
         height:100%;
@@ -218,7 +250,55 @@
                 font-size: 30px;
                 margin-right: 1rem;
             }
+        }    
+    }
+    .playList{
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        background: white;
+        border-top: 1px solid #e4e4e4;
+        z-index: 9999; 
+        header{
+            color: rgb(201, 115, 115);
+            text-align: center;
+            background: white;
+            height: 2rem;
+            line-height: 2rem;
+            border-bottom: 1px solid #e4e4e4;
         }
-        
+        ul{
+            list-style: none;
+            height: 300px;
+            overflow: auto;
+            li{
+                border-bottom: 1px solid #e4e4e4; 
+                height: 2rem;
+                line-height: 2rem;
+                text-overflow: ellipsis;
+                &.on{
+                    color: aqua;
+                }
+                .listName{
+                    display: inline-block;
+                    width: 80%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                .clanel{
+                    float: right;
+                    margin-right: 1rem;
+                }
+            }
+        }
+        footer{ 
+            width: 100%;
+            bottom: 0;
+            height: 2rem;
+            line-height: 2rem;
+            text-align: center;
+            border-top: 1px solid #e4e4e4;
+        }
     }
 </style>

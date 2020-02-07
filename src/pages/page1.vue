@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<headerGuide msg="音乐馆"></headerGuide>
+		<div class="zanwei"></div>
 		<slider></slider>
 		<recommend></recommend>
 	</div>
@@ -25,6 +26,8 @@
 </script>
 
 <style lang="less">
+	.zanwei{
+		height: 2rem;
+	}
 
-
-</style>>
+</style>

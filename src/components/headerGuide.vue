@@ -1,5 +1,5 @@
 <template>
-	<header>
+	<header class="header">
 		<span id="back" @click="back" v-show="$route.meta.backShow"><i class="iconfont icon-fanhui"></i></span>
 		<h3 id="titile">{{msg}}</h3>
 		<span id="icon" @click="search" v-show="$route.meta.iconShow"><i class="iconfont icon-search"></i></span>
@@ -70,13 +70,15 @@
 </script>
 
 <style lang="less">
-	header{
+	.header{
 		color: white;
 		background: steelblue;
 		width: 100%;
+		position: fixed;
 		top: 0px;
 		height: 2rem;
-		line-height: 2rem;	
+		line-height: 2rem;
+		z-index: 999;	
 		.iconfont{
 			font-size: 30px;
 		}
@@ -84,6 +86,8 @@
 			display: inline-block;
 			margin-left: 50%;
 			transform: translateX(-50%);
+			white-space: nowrap;
+			overflow: hidden;
 			text-overflow: ellipsis;
 		}
 		#icon{

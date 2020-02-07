@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style lang="less">
-.el-carousel {
+.el-carousel { 
   margin-left: 50%;
   transform: translateX(-50%);
   width: 100%;

@@ -27,7 +27,7 @@ const mutations={
   getId(state,arr){
       state.songId=[];
       for(var i=0;i<arr.length;i++){
-        state.songId.push(arr[i].id);
+        state.songId.push({id:arr[i].id,name:arr[i].name});
       }  
   },
   getIndex(state,index){
