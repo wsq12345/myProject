@@ -4,7 +4,7 @@
         <div class="zanwei"></div>
         <img v-lazy="PicUrl" class="pic" :class="{isPlay:!isPlay}">
         <p class="lyric">{{song}}</p>
-        <audio :src="SongUrl" @canplay="getDuration" @timeupdate="getTime" autoplay id="audio" ref="audio"></audio>
+        <audio :src="SongUrl" @canplay="getDuration" @timeupdate="getTime" @ended="playNext" autoplay id="audio" ref="audio"></audio>
         <div class="play">
             <div class="block">
                 <el-slider v-model="value" :show-tooltip="false" :max="allTime" @change="changeAudio"></el-slider>
@@ -56,6 +56,7 @@
         },
         methods:{
             show(index){
+                this.start=0;
                 setTimeout(()=>{
                     let id=this.$store.state.songId[index].id;
                     this.lists=this.$store.state.songId;
@@ -83,6 +84,7 @@
 
             },
             initLines(content){
+                this.lines=[];
                 const timeExp = /\[\d{2}:\d{2}.\d{3}\]/g;
                 const lines=content.split('\n');
                 for(var i=0;i<lines.length;i++){
@@ -117,7 +119,7 @@
                     this.$refs.audio.currentTime = val;
                 }
                 if(this.song!='纯音乐，请欣赏'){
-                    for(var i=0;i<this.lines.length;i++){
+                    for(var i=0;i<this.lines.length-1;i++){
                         if(val>=this.lines[i].time && val<=this.lines[i+1].time){
                             this.start=i;
                             this.song=this.lines[this.start].txt;
@@ -125,12 +127,14 @@
                             break;
                         }     
                     }
+                    if(val>=this.lines[this.lines.length-1].time)
+                        this.song=this.lines[this.lines.length-1].txt;
                 }
             },
             getTime(e) {
                 this.playingTime=this.setTime(parseInt(e.target.currentTime));
                 this.value=parseInt(e.target.currentTime);
-                if(this.lines.length){
+                if(this.start<this.lines.length){
                     if(parseInt(e.target.currentTime)==this.lines[this.start].time){
                         this.song=this.lines[this.start].txt;
                         this.start++;
@@ -165,6 +169,19 @@
                 }
                 this.$store.commit('updateInde',index);
                 this.show(index);
+            },
+            playNext(){
+                if(this.playLoop==0){
+                    this.next();
+                }if(this.playLoop==1){
+                    this.start=0;
+                    var audio=document.getElementById("audio");
+                    audio.play();
+                }if(this.playLoop==2){
+                    let index=Math.floor(Math.random()*this.$store.state.songId.length);
+                    this.$store.commit('updateInde',index);
+                    this.show(index);
+                }
             },
             loop(){
                 if(this.playLoop==0){
