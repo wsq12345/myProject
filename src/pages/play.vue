@@ -55,36 +55,43 @@
             }       
         },
         methods:{
-            show(index){
+            async show(index){
                 this.start=0;
-                setTimeout(()=>{
-                    let id=this.$store.state.songId[index].id;
-                    this.lists=this.$store.state.songId;
-                    getLyric(id).then(data=>{
-                    if(!data.data.lrc)
-                        this.song='纯音乐，请欣赏'
-                    else
-                        this.initLines(data.data.lrc.lyric);
-                    }).catch(e=>{
-                        console.log(e);
-                    })
-                    songDetail(id).then(data=>{
-                        this.PicUrl=data.data.songs[0].al.picUrl+"?param=300x300";
-                        this.songName=data.data.songs[0].name;
-                    }).catch(e=>{
-                        throw(e);
-                    })
-                    getSongUrl(id).then(data=>{
-                        this.SongUrl=data.data.data[0].url;
-                    }).catch(e=>{
-                        console.log(e);
-                    })    
-                    this.isPlay=true;       
-                },500)
-
+                this.lines=[];
+                let id=this.$store.state.songId[index].id;
+                this.lists=this.$store.state.songId;
+                // getLyric(id).then(data=>{
+                // if(!data.data.lrc)
+                //     this.song='纯音乐，请欣赏'
+                // else
+                //     this.initLines(data.data.lrc.lyric);
+                // }).catch(e=>{
+                //     console.log(e);
+                // })
+                let songLrc=await getLyric({id:id});
+                if(!songLrc.data.lrc)
+                    this.song='纯音乐，请欣赏';
+                else
+                    this.initLines(songLrc.data.lrc.lyric);
+                // songDetail(id).then(data=>{
+                //     this.PicUrl=data.data.songs[0].al.picUrl+"?param=300x300";
+                //     this.songName=data.data.songs[0].name;
+                // }).catch(e=>{
+                //     throw(e);
+                // })
+                let songD=await songDetail({ids:id});
+                this.PicUrl=songD.data.songs[0].al.picUrl+"?param=300x300";
+                this.songName=songD.data.songs[0].name;
+                // getSongUrl(id).then(data=>{
+                //     this.SongUrl=data.data.data[0].url;
+                // }).catch(e=>{
+                //     console.log(e);
+                // })   
+                let songUrl=await getSongUrl({id:id});
+                this.SongUrl=songUrl.data.data[0].url;
+                this.isPlay=true;       
             },
             initLines(content){
-                this.lines=[];
                 const timeExp = /\[\d{2}:\d{2}.\d{3}\]/g;
                 const lines=content.split('\n');
                 for(var i=0;i<lines.length;i++){

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import {getSongList,getSongUrl,getLyric} from '../api/api'
+	import {getSongList} from '../api/api'
 	export default {
 		data() {
 			return {
@@ -19,14 +19,17 @@
 			}
 		},
 		methods: {
-			show: function() {
-				getSongList().then(data=>{
-					//console.log(data.data.result);
-					this.comments=data.data.result;
-					this.$store.commit('getId',this.comments);
-				})
+			async show() {
+				// getSongList().then(data=>{
+				// 	//console.log(data.data.result);
+				// 	this.comments=data.data.result;
+				// 	this.$store.commit('getId',this.comments);
+				// })
+				let data=await getSongList();
+				this.comments=data.data.result;
+				this.$store.commit('getId',this.comments);
 			},
-			getUrl:function(index){
+			getUrl(index){
 				this.$store.commit('getIndex',index);
 				this.$router.replace("/play");
 			}

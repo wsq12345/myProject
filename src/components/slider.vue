@@ -15,13 +15,15 @@ export default {
         }
     },
     methods:{
-        show(){
-            banners().then(data=>{
-                //console.log(data);
-                this.pics=data.data.banners;
-            }).catch(e=>{
-                console.log(e);
-            })
+        async show(){
+            // banners().then(data=>{
+            //     //console.log(data);
+            //     this.pics=data.data.banners;
+            // }).catch(e=>{
+            //     console.log(e);
+            // })
+            let data=await banners();
+            this.pics=data.data.banners;
         }
     },
     mounted(){
