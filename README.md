@@ -24,8 +24,8 @@
     * api
     * assets
     * components - your vue components
-    * pages - your pages
-    *router -routes
+    * pages - your pages  
+    * router -routes
     * stroe -vuex
     * App.vue
     * main.js - main file
