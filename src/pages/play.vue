@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div v-cloak>
         <headerGuide :msg="songName"></headerGuide>
         <div class="zanwei"></div>
-        <img v-lazy="PicUrl" class="pic" :class="{isPlay:!isPlay}">
+        <img :src="PicUrl" class="pic" :class="{isPlay:!isPlay}">
         <p class="lyric">{{song}}</p>
         <audio :src="SongUrl" @canplay="getDuration" @timeupdate="getTime" @ended="playNext" autoplay id="audio" ref="audio"></audio>
         <div class="play">
@@ -43,7 +43,7 @@
                 start: 0,
                 playingTime: '00:00',
                 allTime: 0,
-                isPlay:true,
+                isPlay:false,
                 value: 0,
                 duration: '',
                 songName: '',
@@ -88,8 +88,7 @@
                 //     console.log(e);
                 // })   
                 let songUrl=await getSongUrl({id:id});
-                this.SongUrl=songUrl.data.data[0].url;
-                this.isPlay=true;       
+                this.SongUrl=songUrl.data.data[0].url;    
             },
             initLines(content){
                 const timeExp = /\[\d{2}:\d{2}.\d{3}\]/g;
@@ -117,6 +116,7 @@
                 return `${mintues}:${seconds}`
             },
             getDuration() {
+                this.isPlay=true;
                 let time = this.$refs.audio.duration;
                 this.duration = this.setTime(time);
                 this.allTime=this.$refs.audio.duration;
