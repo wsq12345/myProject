@@ -3,9 +3,11 @@
         <h3>推荐歌单</h3>
         <ul class="recommend">
             <li v-for="item in items" :key="item.index">
-                <img v-lazy="item.picUrl">
-                <span class="playCount"><i class="iconfont icon-erji"></i>{{getCount(item.playCount)}}</span>
-                <div class="content">{{item.name}}</div>
+                <router-link :to="'/detail/'+item.id">
+                    <img v-lazy="item.picUrl">
+                    <span class="playCount"><i class="iconfont icon-erji"></i>{{getCount(item.playCount)}}</span>
+                    <div class="content">{{item.name}}</div>
+                </router-link>
             </li> 
         </ul>
         <div class="foot"></div>

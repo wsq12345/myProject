@@ -8,6 +8,7 @@ import play from '../pages/play'
 import search from '../pages/search'
 import login from '../pages/login'
 import register from '../pages/register'
+import detail from '../pages/detail'
 
 
 export default new VueRouter({
@@ -52,6 +53,16 @@ export default new VueRouter({
 				isShow:true,
 				iconShow:false,
 				loginShow:true
+			}
+		},
+		{
+			path: '/detail/:id',
+			name: 'detail',
+			component:detail,
+			meta:{
+				isShow:false,
+				iconShow:false,
+				backShow:true
 			}
 		},
 		{

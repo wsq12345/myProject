@@ -30,3 +30,4 @@ export const getSongList = () => instance.get('/personalized/newsong')
 export const getSongUrl =(data)=>instance.get('/song/url',{params:data})
 export const songDetail=(data)=>instance.get('/song/detail',{params:data})
 export const getLyric=(data)=>instance.get('/lyric',{params:data})
+export const detail=(data)=>instance.get('/playlist/detail',{params:data});
