@@ -210,7 +210,8 @@
                 this.show(index);
             },
             delSong(index){
-                
+                this.$store.commit('delSong',index);
+                this.show(this.$store.state.index);//删除自动下一首
             }
         },
         mounted(){
@@ -258,7 +259,7 @@
         bottom: 0;
         width: 100%;
         background: rgb(82, 83, 88);
-        color: white;
+        color: white; 
         .block{
             .startTime{
                 float: left;
@@ -283,10 +284,13 @@
         background: white;
         border-top: 1px solid #e4e4e4;
         z-index: 9999; 
+        background: rgb(252, 213, 206);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
         header{
-            color: rgb(201, 115, 115);
+            color: rgb(182, 165, 165);
             text-align: center;
-            background: white;
+            //background: white;
             height: 2rem;
             line-height: 2rem;
             border-bottom: 1px solid #e4e4e4;
@@ -296,6 +300,7 @@
             height: 300px;
             overflow: auto;
             li{
+                padding: 5px 0 5px 0;
                 border-bottom: 1px solid #e4e4e4; 
                 height: 2rem;
                 line-height: 2rem;

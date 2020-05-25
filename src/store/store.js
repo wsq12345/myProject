@@ -36,6 +36,9 @@ const mutations={
   },
   updateInde(state,index){
     state.index=index;
+  },
+  delSong(state,index){
+    state.songId.splice(index,1);
   }
 }
 const getters={
